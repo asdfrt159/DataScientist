@@ -1,10 +1,15 @@
-from DS.list.listNode import ListNode
+from listNode import ListNode
 
 class LinkedListBasic:
-	def __init__(self):
-		self.__head = ListNode('dummy', None)
-		self.__numItems = 0
 
+# ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 초기화 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+	# 각각의 노드 값에는 객체 주소 값이 저장된다. (주소.item = value / 주소.next = 다음노드 주소)
+	def __init__(self):
+		self.__head = ListNode('dummy', None)	# ListNode 객체에서 값을 dummy, 연결값은 None으로 설정한다. (끝이기 때문)
+		self.__numItems = 0  # 총 카운트 
+
+
+# ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 필수함수 (insert, append, pop, )
 	# [알고리즘 5 - 2] 구현: 연결 리스트에 원소 삽입하기(더미 헤드를 두는 대표 버전)
 	def insert(self, i:int, newItem):
 		if i >= 0 and i <= self.__numItems:
@@ -119,12 +124,14 @@ class LinkedListBasic:
 				prev = curr; curr = curr.next
 		return (None, None)
 
-	# [알고리즘 5-6] 구현: 연결 리스트의 i번 노드 알려주기
-	def __getNode(self, i:int) -> ListNode:
-		curr = self.__head # 더미 헤드, index: -1
-		for index in range(i+1):
-			curr = curr.next
-		return curr
+	# [알고리즘 5-6] 구현: 연결 리스트의 i번 노드 알려주기 (특정 index를 넣었을때 해당 주소값을 리턴)
+	#! 매개변수:int : 매개변수에 대한 주석이다. (없거나 다르더라도 에러가 발생하지 않는다.)
+	#! 함수 -> : 함수의 return 값에 대한 주석이다. (없거나 다르더라도 에러가 발생하지 않는다.)
+	def __getNode(self, i:int) -> ListNode:  # 객체를 리턴한다는게 그 객체의 주소를 리턴한다는 것
+		curr = self.__head # 더미 헤드, index: -1  
+		for index in range(i+1):  # range는 0부터 ()값 미만으로 돈다 (0이면 실행안됨)
+			curr = curr.next  # i=0 이면 1번 도니까 dummy.next 라서 처음 index가 나옴 
+		return curr  # 해당 index의 객체값(주소값)을 리턴, 값을 알려면 객체값.item 해야함
 
 	def printList(self):
 		curr = self.__head.next # 0번 노드: 더미 헤드 다음 노드
