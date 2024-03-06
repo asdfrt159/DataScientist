@@ -9,9 +9,9 @@ class CircularLinkedList:
 	def insert(self, i:int, newItem) -> None:
 		if (i >= 0 and i <= self.__numItems):
 			prev = self.getNode(i - 1)
-			newNode = ListNode(newItem, prev.next)
-			prev.next = newNode
-			if i == self.__numItems:
+			newNode = ListNode(newItem, prev.next)  # 이전노드가 가르키던걸 새노드가 가르키게 하고
+			prev.next = newNode  # 이전노드가 새노드를 가르키게 한다.
+			if i == self.__numItems:  # 만약 새 노드를 끝에 추가하려면 tail 도 새 노드를 가르켜야한다.
 				self.__tail = newNode
 			self.__numItems += 1
 		else:
@@ -23,7 +23,7 @@ class CircularLinkedList:
 		self.__tail = newNode
 		self.__numItems += 1
 
-	def pop(self, *args):
+	def pop(self, *args):  #linked list에서 pop(i) 에 무조건 i가 있어야하는데 그렇지 않게해도 동작하기 위함
 		# 가변 파라미터. 인자가 없거나 -1이면 마지막 원소로 처리하기 위함. 파이썬 리스트 규칙 만족
 		if self.isEmpty():
 			return None
@@ -134,7 +134,7 @@ class CircularLinkedList:
 		return (None, None)
  
 	def getNode(self, i:int) -> ListNode:
-		curr = self.__tail.next  # 더미 헤드, index: -1
+		curr = self.__tail.next  # 더미 헤드, index: -1  / 마지막의 다음 (첫번째)
 		for index in range(i+1):
 			curr = curr.next
 		return curr
