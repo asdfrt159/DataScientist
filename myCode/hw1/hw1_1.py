@@ -1,41 +1,3 @@
-# input 값 list 형식으로 분류
-def classify_input(input_str):
-	# 입력 문자열을 공백으로 분리하여 리스트로 변환
-	input_list = [i for i in input_str.split(' ')]
-	
-	# 결과를 저장할 리스트 초기화
-	insert_list = []
-	delete_list = []
-	search_list = []
-	
-	# 입력 리스트를 순회하면서 분류
-	i = 0
-	while i < len(input_list):
-		# 현재 요소가 숫자인 경우
-		if input_list[i].isdigit():
-			next_i = i + 1
-			# 다음 요소도 숫자인 경우
-			if next_i < len(input_list) and input_list[next_i].isdigit():
-				insert_list.append([int(input_list[i]), int(input_list[next_i])])
-				i = next_i  # 다음 숫자도 처리됨
-		else:
-			# 현재 요소가 문자인 경우 (S 또는 D로 시작)
-			command = input_list[i]
-			num1 = int(input_list[i+1])
-			num2 = int(input_list[i+2])
-			if command == 'D':
-				delete_list.append([num1, num2])
-			elif command == 'S':
-				search_list.append([num1, num2])
-			i += 2  # 두 숫자를 건너뜀
-		i += 1
-	
-	return insert_list, delete_list, search_list
-
-
-
-
-
 class Node:
 	def __init__(self, key, value):
 		self.key = key
@@ -92,7 +54,7 @@ class LinkedList :
 	def printList(self):
 		curr = self.head.next # index 노드
 		while curr != None:
-			print(curr.value, end = ' ')
+			print(curr.key, curr.value, end = ' ')
 			curr = curr.next
 		print()
 	
@@ -123,12 +85,13 @@ class OpenAddressHashTable:
 					continue
 
 	def delete(self, key, value) :
-		for i in range(self.size) :
-			if self.table[i].linklen() != -1 :
-				if self.table[i].getNode(0).key == key :
-					print(self.table[i].getNode(0).key)
-			else : 
-				continue
+		hashindex, linkindex = self.search(key,value)
+		if hashindex != None :
+			hashSlot = self.table[hashindex]  
+			res = hashSlot.linkPop(linkindex-1) # search 에서 return +1 함
+			return hashindex, res
+		else : 
+			return None, 'fail'
 
 	def search(self, key, value):
 		for i in range(self.size) :
@@ -141,19 +104,13 @@ class OpenAddressHashTable:
 				else : 
 					index = hashSlot.findindex(value)
 					if index == None :
-						return 'fail'
+						return None, 'fail'
 					else : 
-						return index
+						return i, index	+1	# index에 +1 해줘야한다.
 
-		return 'fail'
+		return None, 'fail'
 	
-		# index = self.hash_function(key)
-		# current = self.table[index]
-		# while current:
-		# 	if current.key == key:
-		# 		return current.value
-		# 	current = current.next
-		# return None
+
 	
 	def printAll(self):
 		for i in range(len(self.table)):
@@ -161,9 +118,6 @@ class OpenAddressHashTable:
 			if self.table[i].linklen() == -1:
 				print("Empty")
 			else:
-				# for j in range(len(self.table[i])):
-				# 	print(self.table[i][j], end=" ")
-				# print()
 				self.table[i].printList()
 				
 
@@ -174,29 +128,56 @@ class OpenAddressHashTable:
 
 
 def main() :
-
-	# 예제 입력
-	input_str = '123 50 224 30 123 25 24 25 123 40 224 77 S 123 25 D 123 25 D 123 40 D 224 100'
-	input_str = input_str.strip()
-	insert_list, delete_list, search_list = classify_input(input_str)
-
-	# 결과 출력
-	print("Insert List:", insert_list)
-	print("Delete List:", delete_list)
-	print("Search List:", search_list)
-
 	h = OpenAddressHashTable()
-	h.insert(123,30)
-	h.insert(22,20)
-	h.insert(22,25)
-	h.insert(23,2)
-	h.insert(224,3)
-	h.insert(123,40)
-	h.insert(123,50)
-	
-	h.printAll()
+	output = []
 
-	print(h.search(22,25))
+	with open('input.txt', 'r') as f :
+		input_str = f.read()
+		print(input_str)
+		print()
+
+	input_str = input_str.strip()
+	input_list = [i for i in input_str.split(' ')]
+	
+	# 입력 리스트를 순회하면서 분류
+	i = 0
+	while i < len(input_list):
+		if input_list[i].isdigit():  # 현재 요소가 숫자인 경우
+			next_i = i + 1  # 다음 요소
+			if next_i < len(input_list) and input_list[next_i].isdigit():  # # 다음 요소도 숫자인 경우
+				h.insert(int(input_list[i]), int(input_list[next_i]))
+				i = next_i  # 다음 숫자도 처리됨
+		else:
+			# 현재 요소가 문자인 경우 (S 또는 D로 시작)
+			command = input_list[i]
+			num1 = int(input_list[i+1])
+			num2 = int(input_list[i+2])
+			if command == 'D':
+				delete_hash, delete_res = h.delete(num1, num2)
+				if delete_res == 'fail' :
+					output.extend(['D',str(delete_res)])
+				else :
+					if delete_res == None :
+						delete_res = 'none'
+					output.extend(['D',str(delete_hash),str(delete_res)])
+			elif command == 'S':
+				search_hash, search_res = h.search(num1, num2)
+				if search_res == 'fail' :
+					output.extend(['S',str(search_res)])
+				else :
+					output.extend(['S',str(search_hash), str(search_res)])
+			i += 2  # 두 숫자를 건너뜀
+		i += 1
+	
+	# h.printAll()
+	output_res = ' '.join(output)
+
+
+	with open('output.txt','w') as f :
+		f.write(output_res)
+
+
+
 if __name__ == '__main__' :
 	main()
 
