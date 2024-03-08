@@ -1,4 +1,0 @@
-S 43 2 S 35 3 S 30 1 S 35 2 D 43 41 D 43 none D 35 none D 30 none
-S 40 1 S 26 3 S 99 2 S 99 1 S 0 1 S 22 2 S 99 4 D 26 none D 99 7 D 99 22 D 38 none D 72 68 D 37 none D 99 22
-S 69 1 S 62 3 S 89 1 S 45 1 S 44 1 S 54 1 S 29 2 S 23 1 S 23 2 S 61 1 S 72 1 S 3 1 S 44 4 S 60 2 S 70 1 S 60 1 S 91 1 D 69 73 D 71 94 D 72 none D 31 none D 35 3 D 20 44 D 91 none D 45 85 D 44 46 D 23 none D 72 none D 3 none D 54 none D 62 94 D 35 none D 71 none D 89 12
-S 52 6 S 78 1 S 54 1 S 23 1 S 49 3 S 52 4 S 69 1 S 5 3 S 27 1 S 3 2 S 48 2 S 73 2 S 17 2 S 5 2 S 63 2 S 52 1 S 11 3 S 69 2 S 15 2 S 49 2 S 3 4 S 96 2 S 54 2 S 3 1 S 15 3 S 21 2 S 29 1 S 73 1 S 57 1 S 67 1 S 60 3 S 97 2 S 78 2 S 49 4 D 63 80 D 0 62 D 69 none D 97 52 D 52 63 D 61 2 D 71 24 D 53 none D 96 23 D 96 23 D 97 none D 52 none D 74 none D 78 none D 0 31 D 73 none D 18 86 D 78 none D 32 none D 67 64 D 18 none D 3 31 D 74 none D 61 83 D 15 45 D 54 71 D 68 none D 3 60 D 52 none D 29 none D 78 none D 17 47 D 38 none D 28 none
