@@ -3,3 +3,4 @@ def bubbleSort(A):
 		for i in range(numElements-1):  # 시작 : 0 / 끝 : n-2 / 간격 : 1
 			if A[i] > A[i+1]:
 				A[i], A[i+1] = A[i+1], A[i]
+
