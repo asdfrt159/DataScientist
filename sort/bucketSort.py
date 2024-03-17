@@ -11,4 +11,9 @@ def bucketSort(A):  # [0, 1) 범위의 실수 정렬
 		insertionSort(B[i])
 		A.extend(B[i])
 
+
+A= [2,3,12,4,5]
+bucketSort(A)
+print(A)
 # 코드 9-11
+

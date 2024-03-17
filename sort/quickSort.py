@@ -1,8 +1,8 @@
 def quickSort(A, p:int, r:int):
 	if p < r:
-		 q = partition(A, p, r)	 # 분할
-		 quickSort(A, p, q-1)	 # 왼쪽 부분 리스트 정렬
-		 quickSort(A, q+1, r)	 # 오른쪽 부분 리스트 정렬
+		q = partition(A, p, r)	 # 분할
+		quickSort(A, p, q-1)	 # 왼쪽 부분 리스트 정렬
+		quickSort(A, q+1, r)	 # 오른쪽 부분 리스트 정렬
 
 def partition(A, p:int, r:int) -> int:
 	x = A[r]					# x: 기준 원소
@@ -15,3 +15,7 @@ def partition(A, p:int, r:int) -> int:
 	return i+1
 
 # 코드 9-5
+
+
+
+

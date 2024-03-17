@@ -21,4 +21,8 @@ def percolateDown(A, k:int, end:int):
 				A[k], A[child] = A[child], A[k]
 				percolateDown(A, child, end)
 
+
+A= [1,2,3,5,3,3,5,1]
+heapSort(A)
+print(A)
 # 코드 9-7
