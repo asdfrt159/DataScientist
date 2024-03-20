@@ -1,6 +1,6 @@
 import time
 
-
+# bubble
 def bubble(A) :
 	for i in range(len(A)-1,0,-1) :  # 전체 비교 횟수 (전체 n-1 비교횟수 부터 1 비교 횟수까지)
 		for j in range(i) :
@@ -8,6 +8,7 @@ def bubble(A) :
 				A[j], A[j+1] = A[j+1], A[j]
 
 
+# selection
 def selection(A) :
 	for i in range(len(A)-1, 0, -1) :  # 검색 범위 (전체 index 부터 1인 index 까지)
 		large_index = 0
@@ -17,6 +18,7 @@ def selection(A) :
 		A[large_index], A[i] = A[i], A[large_index]
 
 
+# insertion
 def insertion(A) :
 	for i in range(1,len(A)) :
 		prev = i-1
@@ -27,17 +29,16 @@ def insertion(A) :
 		A[prev+1] = new
 
 
-
 # shell
 def shell(A) :
 	H = gapspace(len(A)) 
-	for i in H : 
-		for j in range(i) :
-			stepinsert(A, j, i) 
+	for i in H :  # gap ex> 7,3,1 이런식으로 받는다.
+		for j in range(i) :  # 3을 받으면 0,1,2 이런식으로 3으로 쪼개진 것들을 각각 정렬한다.
+			stepinsert(A, j, i)   # (리스트, 시작index, 간격)
 
 def stepinsert(A, start, step) :
 	# insert 정렬
-	for i in range(start + step, len(A), step) :
+	for i in range(start + step, len(A), step) :  # 삽입정렬은 시작은 1부터 즉 시작 + step 으로 시작한다.
 		prev = i - step
 		curr_val = A[i]
 		while prev >= 0 and curr_val < A[prev] :
@@ -53,29 +54,30 @@ def gapspace(n:int)->list :
 	return H
 
 
+# quick
 def quick(A) :
-	quicksort(A, 0, len(A)-1) 
+	quicksort(A, 0, len(A)-1) # 처음과 끝 정보를 받는다.
 
 def quicksort(A, start, end) :
-	if start < end :
+	if start < end :  # 재귀의 종료 조건
 		middle = partition(A, start, end) 
 		quicksort(A, start, middle-1)
 		quicksort(A, middle+1, end)
 
 def partition(A, start, end) :
 	x = A[end]  # 기준값
-	base = start - 1
-	for j in range(start, end) :
+	base = start - 1  # base 기준 왼쪽 작은것
+	for j in range(start, end) :  # j 기준 오른쪽 큰것
 		if x > A[j] :
 			base += 1
 			A[base], A[j] = A[j], A[base]
 	A[base+1], A[end] = A[end], A[base+1]
-	return base + 1
+	return base + 1  # 기준을 바꾼 위치를 return
 	
 
-# merge sort
+# merge
 def merge(A) :
-	mergeSort(A, 0, len(A)-1)
+	mergeSort(A, 0, len(A)-1)  # 처음과 끝 정보
 	
 def mergeSort(A, start, end) :
 	if start < end :  # 종료조건 설정
@@ -115,15 +117,14 @@ def merge2list(A, start, middle, end) :
 	
 
 # heap
-	
 def heap(A:list) : 
 	buildHeap(A)
-	for last in range(len(A)-1, 0, -1) :
+	for last in range(len(A)-1, 0, -1) :  # 우선순위 큐 처럼 최고 높은게 젤 밑으로 보내고 관심제외
 		A[last], A[0] = A[0], A[last]
 		percolateDown(A, 0, last-1)  # 맨 마지막 원소는 제외하고 percolateDwon
 
 def buildHeap(A:list) : 
-	lastParent = (len(A)-2) // 2
+	lastParent = (len(A)-2) // 2  # 마지막 원소 len(A)-1 에 i-1//2
 	for i in range(lastParent, -1, -1) :
 		percolateDown(A, i, len(A)-1)  # 젤 밑부터 차례대로 percolateDown
 
@@ -141,16 +142,16 @@ def percolateDown(A, parent, end) :
 # 계수 정렬
 def countSort(A) :
 	k = max(A)
-	C = [0 for _ in range(k+1)]
+	C = [0 for _ in range(k+1)]  # 0 ~ 최고차항 자연수 셀수 있는 도수분포표
 	for i in range(len(A)) :
 		C[A[i]] += 1
-	for i in range(1, k+1) :
+	for i in range(1, k+1) :  # 누적도수분포표
 		C[i] = C[i] + C[i-1]
 
 	B = [0 for _ in range(len(A))]
 	for i in range(len(A)-1,-1,-1) :
-		B[C[A[i]]-1] = A[i]
-		C[A[i]] -= 1
+		B[C[A[i]]-1] = A[i]  # C자리에서 값있으면 index 이하 값이 그 정도 있다는 소리
+		C[A[i]] -= 1  # 동일 분포에 있는것 값 처리
 	
 	for i in range(len(A)) : 
 		A[i] = B[i]
@@ -160,25 +161,26 @@ import math
 def radixSort(A) :
 	maxdigit = math.ceil(math.log10(max(A)))
 	buffer = [[] for _ in range(10)]
-	for i in range(maxdigit) :
+	for i in range(maxdigit) :  # 자릿수 별로 정렬
 		for x in A : 
 			y = (x//10**i)%10
-			buffer[y].append(x)
+			buffer[y].append(x)  # buffer 자릿수 index 에 값 넣음
 		A.clear()
 		for j in range(10) :
-			A.extend(buffer[j])
+			A.extend(buffer[j])  # index 순으로 전부 합침
 			buffer[j].clear()
 
+# 버킷 정렬
 import math
 def bucketSort(A) :
-	n= len(A)
+	n = len(A)
 	buffer = [[] for _ in range(n)] 
 	for i in range(n) :
-		buffer[math.floor(A[i]*n)].append(A[i])
+		buffer[math.floor(A[i]*n)].append(A[i])  # 스케일링 값을 index 에 넣는다.
 	A.clear()
 	for i in range(n) :
-		insertion(buffer[i])
-		A.extend(buffer[i])
+		insertion(buffer[i])  # index 별로 sorting
+		A.extend(buffer[i])  # 합침
 
 
 
@@ -189,7 +191,7 @@ def main() :
 	# list2 = [0.12,0.234,0.45,0.23,0.98,0.76,0.34]
 	print(f'정렬 전 : {list}, 길이 : {len(list)}')
 	start_time = time.time()
-	bucketSort(list)
+	radixSort(list)
 	end_time = time.time()
 	print(f'정렬 후 : {list}')
 	print(f'시간 : {(end_time - start_time):.10f}')
