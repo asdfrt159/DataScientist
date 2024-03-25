@@ -16,11 +16,11 @@ import sys
 ## Connect to Remote Database
 ## Insert database information
 
-HOST = ""
+HOST = "147.46.15.238"
 PORT = ""
-USER = ""
-PASSWD = ""
-DB = ""
+USER = "DS2024_0024"
+PASSWD = "DS2024_0024"
+DB = "DS_proj_12"
 
 connection = mysql.connector.connect(
     host=HOST,
@@ -77,10 +77,16 @@ def popularity_based_count(user_input=True, item_cnt=None):
     print(f"Popularity Count based recommendation")
     print("=" * 99)
 
-    # TODO: remove sample, return actual recommendation result as df
-    # YOUR CODE GOES HERE !
+    # TODO: remove sample, return actual rec
+    query = 'SELECT item, count(user) AS count\
+            FROM ratings\
+            WHERE rating is not null\
+            GROUP BY item\
+            ORDER BY count DESC'
+    df = get_output(query)
+
     # 쿼리의 결과를 sample 변수에 저장하세요.
-    sample = [(x, 5.0-0.1*x) for x in range(rec_num)]
+    sample = df.head(rec_num)
 
     # do not change column names
     df = pd.DataFrame(sample, columns=['item', 'count'])
