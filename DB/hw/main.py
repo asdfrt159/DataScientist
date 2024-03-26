@@ -77,7 +77,11 @@ def popularity_based_count(user_input=True, item_cnt=None):
     print(f"Popularity Count based recommendation")
     print("=" * 99)
 
-    # TODO: remove sample, return actual rec
+
+
+
+    # YOUR CODE GOES HERE ! -----------------------------------
+
     query = 'SELECT item, count(user) AS count\
             FROM ratings\
             WHERE rating is not null\
@@ -87,6 +91,10 @@ def popularity_based_count(user_input=True, item_cnt=None):
 
     # 쿼리의 결과를 sample 변수에 저장하세요.
     sample = df.head(rec_num)
+
+    #-----------------------------------------------------------
+
+
 
     # do not change column names
     df = pd.DataFrame(sample, columns=['item', 'count'])
@@ -111,8 +119,24 @@ def popularity_based_rating(user_input=True, item_cnt=None):
 
     # TODO: remove sample, return actual recommendation result as df
     # YOUR CODE GOES HERE !
+    query ='SELECT A.item, ROUND(avg(A.scaled_rating),4) AS prediction\
+            FROM (SELECT user, item, (rating-min)/(max-min) AS scaled_rating\
+                FROM ratings AS R NATURAL JOIN (SELECT user,\
+                                                CASE count(rating)\
+                                                        WHEN 1 then 0\
+                                                ELSE min(rating)\
+                                                END AS min,\
+                                                max(rating) AS max\
+                                                FROM ratings\
+                                                GROUP BY user) AS S\
+                ) AS A\
+            GROUP BY A.item\
+            ORDER BY prediction DESC'
+    df = get_output(query)
+
     # 쿼리의 결과를 sample 변수에 저장하세요.
-    sample = [(x, 5.0-0.1*x) for x in range(rec_num)]
+    sample = df.head(rec_num)
+
 
     # do not change column names
     df = pd.DataFrame(sample, columns=['item', 'prediction'])
@@ -125,18 +149,15 @@ def popularity_based_rating(user_input=True, item_cnt=None):
 
 
 # [Algorithm 2] Item-based Recommendation
-def ibcf(user_input=True, user_id=None, rec_threshold=None, rec_max_cnt=None):
+def ibcf(user_input=True, user_id=None, item_cnt=None):
     if user_input:
         user = int(input('User Id: '))
-        rec_cnt = int(input('Recommend Count: '))
-        rec_num = float(input('Recommendation Threshold: '))
+        rec_num = int(input('Number of recommendations?: '))
     else:
         assert user_id is not None
-        assert rec_max_cnt is not None
-        assert rec_threshold is not None
+        assert item_cnt is not None
         user = int(user_id)
-        rec_cnt = int(rec_max_cnt)
-        rec_num = float(rec_threshold)
+        rec_num = int(item_cnt)
 
     print("=" * 99)
     print(f'Item-based Collaborative Filtering')
@@ -160,18 +181,15 @@ def ibcf(user_input=True, user_id=None, rec_threshold=None, rec_max_cnt=None):
 
 
 # [Algorithm 3] (Optional) User-based Recommendation
-def ubcf(user_input=True, user_id=None, rec_threshold=None, rec_max_cnt=None):
+def ubcf(user_input=True, user_id=None, item_cnt=None):
     if user_input:
         user = int(input('User Id: '))
-        rec_cnt = int(input('Recommend Count: '))
-        rec_num = float(input('Recommendation Threshold: '))
+        rec_num = int(input('Number of recommendations?: '))
     else:
         assert user_id is not None
-        assert rec_max_cnt is not None
-        assert rec_threshold is not None
+        assert item_cnt is not None
         user = int(user_id)
-        rec_cnt = int(rec_max_cnt)
-        rec_num = float(rec_threshold)
+        rec_num = int(item_cnt)
 
     print("=" * 99)
     print(f'User-based Collaborative Filtering')
