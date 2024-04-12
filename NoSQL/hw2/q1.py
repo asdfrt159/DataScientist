@@ -9,6 +9,8 @@ gps = db.gps  # gps collection 할당
 
 def q1(input_date):
 
+    input_date = input_date.strip("'")
+
     # 입력 받은 문자열을 시간 변수로 변경
     specific_time = datetime.strptime(input_date, "%Y-%m-%dT%H:%M:%S.%fZ")
     val = gps.aggregate([
